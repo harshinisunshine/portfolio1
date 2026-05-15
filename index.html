@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Harshini's World</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0d1a;
+      --card: #13132b;
+      --accent1: #ff6b6b;
+      --accent2: #ffd93d;
+      --accent3: #6bcbff;
+      --accent4: #a29bfe;
+      --text: #f0f0ff;
+      --muted: #8888aa;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated starfield background */
+    .stars {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    }
+    .star {
+      position: absolute;
+      width: 2px; height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle var(--d) ease-in-out infinite alternate;
+    }
+    @keyframes twinkle {
+      from { opacity: 0.1; transform: scale(1); }
+      to   { opacity: 0.9; transform: scale(1.6); }
+    }
+
+    /* Header */
+    header {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 60px 20px 20px;
+    }
+    .badge {
+      display: inline-block;
+      background: var(--accent4);
+      color: var(--bg);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+      animation: fadeDown 0.8s ease both;
+    }
+    h1 {
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      animation: fadeDown 0.9s ease both;
+    }
+    h1 span.name { color: var(--accent2); }
+    h1 span.wave { display: inline-block; animation: wave 1.5s ease-in-out infinite; }
+    @keyframes wave {
+      0%,100% { transform: rotate(0deg); }
+      25% { transform: rotate(20deg); }
+      75% { transform: rotate(-10deg); }
+    }
+    .subtitle {
+      margin-top: 14px;
+      font-size: 1.1rem;
+      color: var(--muted);
+      animation: fadeDown 1s ease both;
+    }
+    .subtitle strong { color: var(--accent3); }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards grid */
+    .grid {
+      position: relative; z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 30px 26px;
+      border: 1px solid rgba(255,255,255,0.06);
+      transition: transform 0.3s, box-shadow 0.3s;
+      animation: cardIn 0.8s ease both;
+      cursor: default;
+    }
+    .card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+    .card:nth-child(1) { animation-delay: 0.2s; border-top: 3px solid var(--accent1); }
+    .card:nth-child(2) { animation-delay: 0.35s; border-top: 3px solid var(--accent2); }
+    .card:nth-child(3) { animation-delay: 0.5s; border-top: 3px solid var(--accent3); }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .card-icon { font-size: 2.4rem; margin-bottom: 12px; }
+    .card h2 { font-size: 1.3rem; font-weight: 900; margin-bottom: 8px; }
+    .card p  { font-size: 0.92rem; color: var(--muted); line-height: 1.6; }
+
+    /* Math quiz section */
+    .quiz-section {
+      position: relative; z-index: 1;
+      max-width: 500px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
+      animation: cardIn 1s ease 0.6s both;
+    }
+    .quiz-box {
+      background: var(--card);
+      border-radius: 20px;
+      padding: 30px;
+      border: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+    }
+    .quiz-box h3 {
+      font-size: 1.2rem;
+      color: var(--accent4);
+      margin-bottom: 16px;
+      font-family: 'Space Mono', monospace;
+    }
+    #question {
+      font-size: 2rem;
+      font-weight: 900;
+      margin-bottom: 20px;
+      color: var(--accent2);
+      font-family: 'Space Mono', monospace;
+    }
+    .quiz-input {
+      display: flex; gap: 10px; justify-content: center;
+    }
+    .quiz-input input {
+      background: rgba(255,255,255,0.07);
+      border: 2px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      color: var(--text);
+      font-size: 1.3rem;
+      font-family: 'Space Mono', monospace;
+      padding: 10px 16px;
+      width: 120px;
+      text-align: center;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .quiz-input input:focus { border-color: var(--accent4); }
+    .quiz-input button {
+      background: var(--accent4);
+      color: var(--bg);
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: 'Nunito', sans-serif;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .quiz-input button:hover { background: var(--accent3); transform: scale(1.05); }
+    #feedback {
+      margin-top: 16px;
+      font-size: 1rem;
+      font-weight: 700;
+      min-height: 28px;
+      transition: color 0.2s;
+    }
+    .score-line {
+      margin-top: 10px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* Code snippet ticker */
+    .code-ticker {
+      position: relative; z-index: 1;
+      overflow: hidden;
+      white-space: nowrap;
+      padding: 14px 0;
+      background: rgba(255,255,255,0.03);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 50px;
+    }
+    .code-ticker span {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--accent3);
+      animation: scroll-left 22s linear infinite;
+      padding-right: 80px;
+    }
+    @keyframes scroll-left {
+      from { transform: translateX(100vw); }
+      to   { transform: translateX(-100%); }
+    }
+
+    footer {
+      position: relative; z-index: 1;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Star background -->
+  <div class="stars" id="stars"></div>
+
+  <header>
+    <div class="badge">✦ Class 10 · Sunshine School ✦</div>
+    <h1>Hello, <span class="name">Harshini</span>! <span class="wave">👋</span></h1>
+    <p class="subtitle">Future <strong>coder</strong> &amp; <strong>mathematician</strong> in the making 🚀</p>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon">💻</div>
+      <h2>Coding</h2>
+      <p>Every great app starts with a curious mind. You're already writing HTML — that means you're a developer. Keep going, the journey is amazing!</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">📐</div>
+      <h2>Mathematics</h2>
+      <p>Math is the language the universe speaks. From algebra to algorithms — every concept you learn is a superpower that unlocks more of the world.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🌟</div>
+      <h2>Your Future</h2>
+      <p>Coding + Maths = limitless potential. Think AI, game dev, data science, space tech. The best is absolutely yet to come for you, Harshini!</p>
+    </div>
+  </div>
+
+  <!-- Code ticker -->
+  <div class="code-ticker">
+    <span>print("Hello, Harshini!") &nbsp;·&nbsp; for i in range(10): &nbsp;·&nbsp; if curious == True: learn() &nbsp;·&nbsp; &lt;h1&gt;I love coding!&lt;/h1&gt; &nbsp;·&nbsp; x² + y² = r² &nbsp;·&nbsp; def dream(): return "unlimited" &nbsp;·&nbsp; console.log("Sunshine School 🌞") &nbsp;·&nbsp; </span>
+  </div>
+
+  <!-- Math Quiz -->
+  <div class="quiz-section">
+    <div class="quiz-box">
+      <h3>⚡ Quick Math Challenge</h3>
+      <div id="question">Loading...</div>
+      <div class="quiz-input">
+        <input type="number" id="answer" placeholder="?" />
+        <button onclick="checkAnswer()">Go!</button>
+      </div>
+      <div id="feedback"></div>
+      <div class="score-line">Score: <span id="score">0</span> / <span id="total">0</span></div>
+    </div>
+  </div>
+
+  <footer>Made with ♥ for Harshini · Keep coding, keep counting ✦</footer>
+
+  <script>
+    // Stars
+    const container = document.getElementById('stars');
+    for (let i = 0; i < 120; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      s.style.left = Math.random() * 100 + '%';
+      s.style.top  = Math.random() * 100 + '%';
+      s.style.setProperty('--d', (1.5 + Math.random() * 3).toFixed(2) + 's');
+      s.style.animationDelay = (Math.random() * 3).toFixed(2) + 's';
+      container.appendChild(s);
+    }
+
+    // Math quiz
+    let a, b, op, correct, score = 0, total = 0;
+
+    function newQuestion() {
+      a = Math.floor(Math.random() * 12) + 1;
+      b = Math.floor(Math.random() * 12) + 1;
+      const ops = ['+', '-', '×'];
+      op = ops[Math.floor(Math.random() * ops.length)];
+      if (op === '+') correct = a + b;
+      else if (op === '-') { if (a < b) [a, b] = [b, a]; correct = a - b; }
+      else correct = a * b;
+      document.getElementById('question').textContent = `${a} ${op} ${b} = ?`;
+      document.getElementById('answer').value = '';
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('answer').focus();
+    }
+
+    function checkAnswer() {
+      const val = parseInt(document.getElementById('answer').value);
+      if (isNaN(val)) return;
+      total++;
+      const fb = document.getElementById('feedback');
+      if (val === correct) {
+        score++;
+        fb.textContent = '✅ Correct! You rock!';
+        fb.style.color = '#6bcbff';
+      } else {
+        fb.textContent = `❌ Not quite — the answer was ${correct}. Try the next one!`;
+        fb.style.color = '#ff6b6b';
+      }
+      document.getElementById('score').textContent = score;
+      document.getElementById('total').textContent = total;
+      setTimeout(newQuestion, 1600);
+    }
+
+    document.getElementById('answer').addEventListener('keydown', e => {
+      if (e.key === 'Enter') checkAnswer();
+    });
+
+    newQuestion();
+  </script>
+</body>
+</html>
